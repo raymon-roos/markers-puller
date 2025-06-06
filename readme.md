@@ -26,6 +26,7 @@ If it went well, you would see something like this in the network tab:
 
 **Step 5:**
 We are searching for a specific part in here and we can easily find it by sorting things on time by clicking 2 times on the time part in the network tab so there is a downwards arrow next to "time":
+
 before:
 
 ![Screenshot](assets/before_click.png)
