@@ -103,6 +103,6 @@ If you now run the puthon code, there should appear an output directory next to 
 
 **if you need to install the libraries:**
 
-pip install json os re
+'''pip install json os re'''
 
 ![alt text](assets/output.png)
