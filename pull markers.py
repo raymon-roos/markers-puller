@@ -1,6 +1,6 @@
 import json
 
-json_file_path = 'markers.json'
+json_file_path = 'markers_s1.json'
 specific_key = 'evaluations'  # The key where the list/dict is located
 other_keys = ["evaluation_invites", "goals", "handins", "question_responses", "questions", "reports", "users"]
 
@@ -15,17 +15,35 @@ if specific_key in data:
         import os
         import re
 
-        output_dir = "output"
+        output_dir = "output_s1"
         os.makedirs(output_dir, exist_ok=True)
 
         for idx, element in enumerate(elements):
+            created_by_user_id = element["created_by_user_id"]
+            created_time = element["created_time"]
             display_label = element["display_label"]
-            message = element["message"]
+            users_send_to_ids = element["evaluation_invite_ids"]
+            evaluation_type = element["evaluation_type"]
+            feedback_moment_id = element["feedback_moment_id"]
+            feedback_provider_type_id = element["feedback_provider_type_id"]
+            goal_ids = element["goal_ids"]
             element_id = element["id"]
-            users_send_to_ids = set(element["evaluation_invite_ids"])
+            is_sent = element["is_sent"]
+            is_sent_time = element["is_sent_time"]
+            label = element["label"]
+            last_reminder_sent_time = element["last_reminder_sent_time"]
+            linked_handin_ids = element["linked_handin_ids"]
+            linked_report_ids = element["linked_report_ids"]
+            load_time = element["load_time"]
+            message = element["message"]
+            project_id = element["project_id"]
+            rubric = element["rubric_id"]
+            self_evaluation_report_id = element["self_evaluation_report_id"]
+
             users_send_to_id = set()
             users_send_to = {}
             responses = {}
+            file_urls = set()
 
             typed_texts = set()
 
@@ -57,6 +75,11 @@ if specific_key in data:
                                     responses[uid] = []
                                 responses[uid].append(other_element["comment"])
 
+                        elif key == "handins":
+                            if other_element.get("evaluation_id") == element_id:
+                                print(other_element["file_download_url"])
+                                file_urls.add(other_element["file_download_url"])
+
                         elif key == "users":
                             uid = other_element["id"]
                             if uid in users_send_to_id and uid not in users_send_to:
@@ -65,12 +88,25 @@ if specific_key in data:
 
                     except Exception:
                         continue
-                    
+            if feedback_moment_id == 10074:
+                type_file = "evaluation"
+            elif feedback_moment_id == 10076:
+                type_file = "reflection"
+            elif feedback_moment_id == 10075:
+                type_file = "feedback"
+            elif feedback_moment_id == 10077:
+                type_file = "checkin"
+            elif feedback_moment_id == 10120:
+                type_file = "file"
+            else:
+                type_file = "something else"        
             # Create Markdown content
             markdown_lines = [
                 f"# {display_label}\n",
                 f"**ID:** {element_id}",
                 f"\n**Message:** {message}\n",
+                f"\n**type of file:** {type_file}\n",
+                f"\n**download url of file:** {file_urls}\n",
             ]
 
             if typed_texts:
