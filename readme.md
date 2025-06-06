@@ -18,6 +18,7 @@ Go to inspect element.
 
 ![Screenshot](assets/to_inspect_element.png)
 
+##
 
 **Step 3:**
 
@@ -30,6 +31,7 @@ But can also be in a hamburger menu like this:
 
 ![Screenshot](assets/network_in_hamburger.png)
 
+##
 
 **Step 4:**
 
@@ -38,6 +40,7 @@ If it went well, you would see something like this in the network tab:
 
 ![Screenshot](assets/network_after_refresh.png)
 
+##
 
 **Step 5:**
 
@@ -51,6 +54,7 @@ after:
 
 ![Screenshot](assets/after_click.png)
 
+##
 
 **Step 6:**
 
@@ -64,6 +68,7 @@ after:
 
 ![alt text](assets/api_after_click.png)
 
+##
 
 **Step 7:**
 
@@ -81,6 +86,7 @@ If done correctly, the page will load for probably a few seconds and then show s
 
 ![alt text](assets/api_result.png)
 
+##
 
 **Step 8:**
 
@@ -88,6 +94,7 @@ Copy all the text in that browser window and save it in a JSON file next to the 
 
 ![alt text](assets/text_saved_in_json.png)
 
+##
 
 **Step 9:**
 
