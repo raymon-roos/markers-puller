@@ -86,4 +86,4 @@ Copy all the text in that browser window and save it in a JSON file next to the 
 
 If you now run the puthon code, there should appear an output directory next to the python code with everything you uploaded to Markers.
 
-![alt text](assets/output.png.png)
+![alt text](assets/output.png)
