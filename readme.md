@@ -3,6 +3,7 @@
 **Step 1:**
 
 Open your Markers and log in.
+Go to one of your collections at a time.
 
 
 **Step 2:**
