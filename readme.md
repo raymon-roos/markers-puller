@@ -44,4 +44,4 @@ before:
 
 after:
 
-![alt text](assets/api_after_click.png.png)
+![alt text](assets/api_after_click.png)
