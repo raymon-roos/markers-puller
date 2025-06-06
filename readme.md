@@ -1,4 +1,8 @@
-# Guide
+# How to use?
+
+**Step 0:**
+
+Download the code from this repo.
 
 **Step 1:**
 
