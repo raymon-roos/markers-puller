@@ -1,92 +1,75 @@
-z='file_download_url'
-y='feedback_provider_id'
-x='</s>'
-w='<s>'
-v='</u>'
-u='<u>'
-t='</em>'
-s='<em>'
-r='</strong>'
-q='<strong>'
-p='</li>'
-o='<li>'
-n='</ol>'
-m='<ol>'
-l='</ul>'
-k='<ul>'
-j='<br>'
-i='</p>'
-h='<p>'
-g='comment'
-f='utf-8'
-e='users'
-d='question_responses'
-c='handins'
-b='evaluation_invites'
-V='evaluation_id'
-U='id'
-T=set
-S=isinstance
-K=print
-A=''
+h='file_download_url'
+g='feedback_provider_id'
+f='comment'
+e='utf-8'
+d='users'
+c='question_responses'
+b='handins'
+a='evaluation_invites'
+U='evaluation_id'
+T='id'
+S=set
+R=isinstance
+J=print
 import json
-A0='markers.json'
-L='evaluations'
-A1=[b,'goals',c,d,'questions','reports',e]
-with open(A0,'r',encoding=f)as A2:M=json.load(A2)
-if L in M:
-	N=M[L]
-	if S(N,list):
-		import os,re;W='output';os.makedirs(W,exist_ok=True)
-		for(AC,B)in enumerate(N):
-			AD=B['created_by_user_id'];AE=B['created_time'];X=B['display_label'];A3=B['evaluation_invite_ids'];AF=B['evaluation_type'];H=B['feedback_moment_id'];AG=B['feedback_provider_type_id'];AH=B['goal_ids'];O=B[U];AI=B['is_sent'];AJ=B['is_sent_time'];AK=B['label'];AL=B['last_reminder_sent_time'];AM=B['linked_handin_ids'];AN=B['linked_report_ids'];AO=B['load_time'];A4=B['message'];AP=B['project_id'];AQ=B['rubric_id'];AR=B['self_evaluation_report_id'];P=T();I={};J={};Y=T();Q=T()
-			for E in A1:
-				if E not in M:continue
-				Z=M[E]
-				if not S(Z,list):continue
-				for C in Z:
+i='markers.json'
+K='evaluations'
+j=[a,'goals',b,c,'questions','reports',d]
+with open(i,'r',encoding=e)as k:L=json.load(k)
+def filter(text):A='';return text.replace('<p>',A).replace('</p>',A).replace('<br>',A).replace('<ul>',A).replace('</ul>',A).replace('<ol>',A).replace('</ol>',A).replace('<li>',A).replace('</li>',A).replace('<strong>',A).replace('</strong>',A).replace('<em>',A).replace('</em>',A).replace('<u>',A).replace('</u>',A).replace('<s>',A).replace('</s>',A)
+if K in L:
+	M=L[K]
+	if R(M,list):
+		import os,re;V='output';os.makedirs(V,exist_ok=True)
+		for(u,A)in enumerate(M):
+			v=A['created_by_user_id'];w=A['created_time'];W=A['display_label'];l=A['evaluation_invite_ids'];x=A['evaluation_type'];G=A['feedback_moment_id'];y=A['feedback_provider_type_id'];z=A['goal_ids'];N=A[T];A0=A['is_sent'];A1=A['is_sent_time'];A2=A['label'];A3=A['last_reminder_sent_time'];A4=A['linked_handin_ids'];A5=A['linked_report_ids'];A6=A['load_time'];m=A['message'];A7=A['project_id'];A8=A['rubric_id'];A9=A['self_evaluation_report_id'];O=S();H={};I={};X=S();P=S()
+			for D in j:
+				if D not in L:continue
+				Y=L[D]
+				if not R(Y,list):continue
+				for B in Y:
 					try:
-						if E==b:
-							if C[U]in A3:P.add(C['user_id'])
-						elif E==d:
-							if C.get(V)==O:Q.add(C[g].replace(h,A).replace(i,A).replace(j,A).replace(k,A).replace(l,A).replace(m,A).replace(n,A).replace(o,A).replace(p,A).replace(q,A).replace(r,A).replace(s,A).replace(t,A).replace(u,A).replace(v,A).replace(w,A).replace(x,A))
-							if C.get(y)in P and C.get(V)==O:
-								D=C[y]
-								if D not in J:J[D]=[]
-								J[D].append(C[g].replace(h,A).replace(i,A).replace(j,A).replace(k,A).replace(l,A).replace(m,A).replace(n,A).replace(o,A).replace(p,A).replace(q,A).replace(r,A).replace(s,A).replace(t,A).replace(u,A).replace(v,A).replace(w,A).replace(x,A))
-						elif E==c:
-							if C.get(V)==O:K(C[z]);Y.add(C[z])
-						elif E==e:
-							D=C[U]
-							if D in P and D not in I:A5=f"{C["first_names"]} {C["last_name"]}";I[D]=A5
+						if D==a:
+							if B[T]in l:O.add(B['user_id'])
+						elif D==c:
+							if B.get(U)==N:P.add(filter(B[f]))
+							if B.get(g)in O and B.get(U)==N:
+								C=B[g]
+								if C not in I:I[C]=[]
+								I[C].append(filter(B[f]))
+						elif D==b:
+							if B.get(U)==N:J(B[h]);X.add(B[h])
+						elif D==d:
+							C=B[T]
+							if C in O and C not in H:n=f"{B["first_names"]} {B["last_name"]}";H[C]=n
 					except Exception:continue
-			if H==10074:G='evaluation'
-			elif H==10076:G='reflection'
-			elif H==10075:G='feedback'
-			elif H==10077:G='checkin'
-			elif H==10120:G='file'
-			else:G='something else'
-			F=[f"# {X}\n",f"**ID:** {O}",f"\n**Message:** {A4}\n",f"\n**type of file:** {G}\n",f"\n**download url of file:** {Y}\n"]
-			if Q:
-				F.append(f"\n**Typed Texts:**")
-				for A6 in Q:F.append(f"\n```html\n{A6}\n```\n")
+			if G==10074:F='evaluation'
+			elif G==10076:F='reflection'
+			elif G==10075:F='feedback'
+			elif G==10077:F='checkin'
+			elif G==10120:F='file'
+			else:F='something else'
+			E=[f"# {W}\n",f"**ID:** {N}",f"\n**Message:** {m}\n",f"\n**type of file:** {F}\n",f"\n**download url of file:** {X}\n"]
+			if P:
+				E.append(f"\n**Typed Texts:**")
+				for o in P:E.append(f"\n```html\n{o}\n```\n")
+			if H:
+				E.append('\n**You sent this to:**')
+				for Q in H.values():E.append(f"\n- {Q}")
 			if I:
-				F.append('\n**You sent this to:**')
-				for R in I.values():F.append(f"\n- {R}")
-			if J:
-				F.append('\n\n**Responses:**')
-				for(D,A7)in J.items():
-					R=I.get(D,f"User {D}")
-					for A8 in A7:F.append(f"""
-- {R} responded:
+				E.append('\n\n**Responses:**')
+				for(C,p)in I.items():
+					Q=H.get(C,f"User {C}")
+					for q in p:E.append(f"""
+- {Q} responded:
 ```html
-{A8}
+{q}
 ```
 """)
-			A9=re.sub('[^\\w\\-_\\. ]','_',X)[:100];a=os.path.join(W,f"{A9}.md")
-			with open(a,'w',encoding=f)as AA:AA.write('\n'.join(F))
-			K(f"Markdown saved to {a}")
-	elif S(N,dict):
-		for(E,AB)in N.items():K(f"Key: {E}, Value: {AB}")
-	else:K(f"The value under '{L}' is neither a list nor a dictionary.")
-else:K(f"Key '{L}' not found in the JSON file.")
+			r=re.sub('[^\\w\\-_\\. ]','_',W)[:100];Z=os.path.join(V,f"{r}.md")
+			with open(Z,'w',encoding=e)as s:s.write('\n'.join(E))
+			J(f"Markdown saved to {Z}")
+	elif R(M,dict):
+		for(D,t)in M.items():J(f"Key: {D}, Value: {t}")
+	else:J(f"The value under '{K}' is neither a list nor a dictionary.")
+else:J(f"Key '{K}' not found in the JSON file.")
