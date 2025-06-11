@@ -8,7 +8,7 @@ with open(json_file_path, 'r', encoding='utf-8') as file:
     data = json.load(file)
 
 def filter(text):
-    return text.replace("<p>", "").replace("</p>", "").replace("<br>", "").replace("<ul>", "").replace("</ul>", "").replace("<ol>", "").replace("</ol>", "").replace("<li>", "").replace("</li>", "").replace("<strong>", "").replace("</strong>", "").replace("<em>", "").replace("</em>", "").replace("<u>", "").replace("</u>", "").replace("<s>", "").replace("</s>", "")
+    return text.replace("<p>", "").replace("</p>", "").replace("<br>", "").replace("<ul>", "").replace("</ul>", "").replace("<ol>", "").replace("</ol>", "").replace("<li>", "").replace("</li>", "").replace("<strong>", "").replace("</strong>", "").replace("<em>", "").replace("</em>", "").replace("<u>", "").replace("</u>", "").replace("<s>", "").replace("</s>", "").replace("<span>", "").replace("</span>", "")
 
 if specific_key in data:
     elements = data[specific_key]
@@ -76,8 +76,13 @@ if specific_key in data:
 
                         elif key == "handins":
                             if other_element.get("evaluation_id") == element_id:
-                                print(other_element["file_download_url"])
-                                file_urls.add(other_element["file_download_url"])
+                                if other_element["file_download_url"] != None:
+                                    print(other_element["file_download_url"])
+                                    file_urls.add(other_element["file_download_url"])
+                                if other_element["external_url"] != None:
+                                    print(other_element["external_url"])
+                                    file_urls.add(other_element["external_url"])
+                            
 
                         elif key == "users":
                             uid = other_element["id"]
@@ -102,22 +107,27 @@ if specific_key in data:
             markdown_lines = [
                 f"# {display_label}\n",
                 f"**ID:** {element_id}",
-                f"\n**Message:** {message}\n",
-                f"\n**type of file:** {type_file}\n",
-                f"\n**download url of file:** {file_urls}\n",
             ]
+            if message != None:
+                markdown_lines.append(f"\n**Message:** {message}\n")
 
-            if typed_texts:
+            if type_file != None:
+                markdown_lines.append(f"\n**type of file:** {type_file}\n")
+
+            if file_urls != None and file_urls != set():
+                markdown_lines.append(f"\n**download url of file:** {file_urls}\n")
+
+            if typed_texts != None and typed_texts:
                 markdown_lines.append(f"\n**Typed Texts:**")
                 for txt in typed_texts:
                     markdown_lines.append(f"\n```html\n{txt}\n```\n")
 
-            if users_send_to:
+            if users_send_to != None and users_send_to:
                 markdown_lines.append("\n**You sent this to:**")
                 for name in users_send_to.values():
                     markdown_lines.append(f"\n- {name}")
 
-            if responses:
+            if responses != None and responses:
                 markdown_lines.append("\n\n**Responses:**")
                 for uid, comments in responses.items():
                     name = users_send_to.get(uid, f"User {uid}")
