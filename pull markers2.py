@@ -1,75 +1,142 @@
-h='file_download_url'
-g='feedback_provider_id'
-f='comment'
-e='utf-8'
-d='users'
-c='question_responses'
-b='handins'
-a='evaluation_invites'
-U='evaluation_id'
-T='id'
-S=set
-R=isinstance
-J=print
 import json
-i='markers.json'
-K='evaluations'
-j=[a,'goals',b,c,'questions','reports',d]
-with open(i,'r',encoding=e)as k:L=json.load(k)
-def filter(text):A='';return text.replace('<p>',A).replace('</p>',A).replace('<br>',A).replace('<ul>',A).replace('</ul>',A).replace('<ol>',A).replace('</ol>',A).replace('<li>',A).replace('</li>',A).replace('<strong>',A).replace('</strong>',A).replace('<em>',A).replace('</em>',A).replace('<u>',A).replace('</u>',A).replace('<s>',A).replace('</s>',A)
-if K in L:
-	M=L[K]
-	if R(M,list):
-		import os,re;V='output';os.makedirs(V,exist_ok=True)
-		for(u,A)in enumerate(M):
-			v=A['created_by_user_id'];w=A['created_time'];W=A['display_label'];l=A['evaluation_invite_ids'];x=A['evaluation_type'];G=A['feedback_moment_id'];y=A['feedback_provider_type_id'];z=A['goal_ids'];N=A[T];A0=A['is_sent'];A1=A['is_sent_time'];A2=A['label'];A3=A['last_reminder_sent_time'];A4=A['linked_handin_ids'];A5=A['linked_report_ids'];A6=A['load_time'];m=A['message'];A7=A['project_id'];A8=A['rubric_id'];A9=A['self_evaluation_report_id'];O=S();H={};I={};X=S();P=S()
-			for D in j:
-				if D not in L:continue
-				Y=L[D]
-				if not R(Y,list):continue
-				for B in Y:
-					try:
-						if D==a:
-							if B[T]in l:O.add(B['user_id'])
-						elif D==c:
-							if B.get(U)==N:P.add(filter(B[f]))
-							if B.get(g)in O and B.get(U)==N:
-								C=B[g]
-								if C not in I:I[C]=[]
-								I[C].append(filter(B[f]))
-						elif D==b:
-							if B.get(U)==N:J(B[h]);X.add(B[h])
-						elif D==d:
-							C=B[T]
-							if C in O and C not in H:n=f"{B["first_names"]} {B["last_name"]}";H[C]=n
-					except Exception:continue
-			if G==10074:F='evaluation'
-			elif G==10076:F='reflection'
-			elif G==10075:F='feedback'
-			elif G==10077:F='checkin'
-			elif G==10120:F='file'
-			else:F='something else'
-			E=[f"# {W}\n",f"**ID:** {N}",f"\n**Message:** {m}\n",f"\n**type of file:** {F}\n",f"\n**download url of file:** {X}\n"]
-			if P:
-				E.append(f"\n**Typed Texts:**")
-				for o in P:E.append(f"\n```html\n{o}\n```\n")
-			if H:
-				E.append('\n**You sent this to:**')
-				for Q in H.values():E.append(f"\n- {Q}")
-			if I:
-				E.append('\n\n**Responses:**')
-				for(C,p)in I.items():
-					Q=H.get(C,f"User {C}")
-					for q in p:E.append(f"""
-- {Q} responded:
-```html
-{q}
-```
-""")
-			r=re.sub('[^\\w\\-_\\. ]','_',W)[:100];Z=os.path.join(V,f"{r}.md")
-			with open(Z,'w',encoding=e)as s:s.write('\n'.join(E))
-			J(f"Markdown saved to {Z}")
-	elif R(M,dict):
-		for(D,t)in M.items():J(f"Key: {D}, Value: {t}")
-	else:J(f"The value under '{K}' is neither a list nor a dictionary.")
-else:J(f"Key '{K}' not found in the JSON file.")
+
+json_file_path = 'markers.json'
+specific_key = 'evaluations'
+other_keys = ["evaluation_invites", "goals", "handins", "question_responses", "questions", "reports", "users"]
+
+with open(json_file_path, 'r', encoding='utf-8') as file:
+    data = json.load(file)
+
+def filter(text):
+    return text.replace("<p>", "").replace("</p>", "").replace("<br>", "").replace("<ul>", "").replace("</ul>", "").replace("<ol>", "").replace("</ol>", "").replace("<li>", "").replace("</li>", "").replace("<strong>", "").replace("</strong>", "").replace("<em>", "").replace("</em>", "").replace("<u>", "").replace("</u>", "").replace("<s>", "").replace("</s>", "")
+
+if specific_key in data:
+    elements = data[specific_key]
+
+    if isinstance(elements, list):
+        import os
+        import re
+
+        output_dir = "output"
+        os.makedirs(output_dir, exist_ok=True)
+
+        for idx, element in enumerate(elements):
+            created_by_user_id = element["created_by_user_id"]
+            created_time = element["created_time"]
+            display_label = element["display_label"]
+            users_send_to_ids = element["evaluation_invite_ids"]
+            evaluation_type = element["evaluation_type"]
+            feedback_moment_id = element["feedback_moment_id"]
+            feedback_provider_type_id = element["feedback_provider_type_id"]
+            goal_ids = element["goal_ids"]
+            element_id = element["id"]
+            is_sent = element["is_sent"]
+            is_sent_time = element["is_sent_time"]
+            label = element["label"]
+            last_reminder_sent_time = element["last_reminder_sent_time"]
+            linked_handin_ids = element["linked_handin_ids"]
+            linked_report_ids = element["linked_report_ids"]
+            load_time = element["load_time"]
+            message = element["message"]
+            project_id = element["project_id"]
+            rubric = element["rubric_id"]
+            self_evaluation_report_id = element["self_evaluation_report_id"]
+
+            users_send_to_id = set()
+            users_send_to = {}
+            responses = {}
+            file_urls = set()
+
+            typed_texts = set()
+
+            for key in other_keys:
+                if key not in data:
+                    continue
+                other_elements = data[key]
+
+                if not isinstance(other_elements, list):
+                    continue
+                
+                for other_element in other_elements:
+                    try:
+                        if key == "evaluation_invites":
+                            if other_element["id"] in users_send_to_ids:
+                                users_send_to_id.add(other_element["user_id"])
+
+                        elif key == "question_responses":
+                            if other_element.get("evaluation_id") == element_id:
+                                typed_texts.add(filter(other_element["comment"]))
+
+                            if other_element.get("feedback_provider_id") in users_send_to_id and \
+                               other_element.get("evaluation_id") == element_id:
+                                uid = other_element["feedback_provider_id"]
+                                if uid not in responses:
+                                    responses[uid] = []
+                                responses[uid].append(filter(other_element["comment"]))
+
+                        elif key == "handins":
+                            if other_element.get("evaluation_id") == element_id:
+                                print(other_element["file_download_url"])
+                                file_urls.add(other_element["file_download_url"])
+
+                        elif key == "users":
+                            uid = other_element["id"]
+                            if uid in users_send_to_id and uid not in users_send_to:
+                                full_name = f"{other_element['first_names']} {other_element['last_name']}"
+                                users_send_to[uid] = full_name
+
+                    except Exception:
+                        continue
+            if feedback_moment_id == 10074:
+                type_file = "evaluation"
+            elif feedback_moment_id == 10076:
+                type_file = "reflection"
+            elif feedback_moment_id == 10075:
+                type_file = "feedback"
+            elif feedback_moment_id == 10077:
+                type_file = "checkin"
+            elif feedback_moment_id == 10120:
+                type_file = "file"
+            else:
+                type_file = "something else"        
+            markdown_lines = [
+                f"# {display_label}\n",
+                f"**ID:** {element_id}",
+                f"\n**Message:** {message}\n",
+                f"\n**type of file:** {type_file}\n",
+                f"\n**download url of file:** {file_urls}\n",
+            ]
+
+            if typed_texts:
+                markdown_lines.append(f"\n**Typed Texts:**")
+                for txt in typed_texts:
+                    markdown_lines.append(f"\n```html\n{txt}\n```\n")
+
+            if users_send_to:
+                markdown_lines.append("\n**You sent this to:**")
+                for name in users_send_to.values():
+                    markdown_lines.append(f"\n- {name}")
+
+            if responses:
+                markdown_lines.append("\n\n**Responses:**")
+                for uid, comments in responses.items():
+                    name = users_send_to.get(uid, f"User {uid}")
+                    for comment in comments:
+                        markdown_lines.append(f"\n- {name} responded:\n```html\n{comment}\n```\n")
+
+            safe_filename = re.sub(r'[^\w\-_\. ]', '_', display_label)[:100]
+            file_path = os.path.join(output_dir, f"{safe_filename}.md")
+
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write("\n".join(markdown_lines))
+
+            print(f"Markdown saved to {file_path}")
+
+
+    elif isinstance(elements, dict):
+        for key, value in elements.items():
+            print(f"Key: {key}, Value: {value}")
+    else:
+        print(f"The value under '{specific_key}' is neither a list nor a dictionary.")
+else:
+    print(f"Key '{specific_key}' not found in the JSON file.")
