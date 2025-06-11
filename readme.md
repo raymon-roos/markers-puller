@@ -113,4 +113,4 @@ If you now run the puthon code, there should appear an output directory next to 
 If you have many collections, i would reccomend another repo of mine that allows you to record your mouse and keyboard events and play them back.
 this would allow you to just go once to a collection and record the process and then just switch from collection and run the process again.
 
-[text](https://github.com/bumblebee4105/super-macro)
+https://github.com/bumblebee4105/super-macro
