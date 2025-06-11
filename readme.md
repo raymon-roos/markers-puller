@@ -9,6 +9,14 @@ https://github.com/bumblebee4105/super-macro
 
 ##
 
+**if you need to install the libraries:**
+
+```pip install json os re```
+
+![alt text](assets/output.png)
+
+##
+
 **Step 0:**
 
 Download the code from this repo.
@@ -109,9 +117,3 @@ Copy all the text in that browser window and save it in a JSON file next to the 
 **Step 9:**
 
 If you now run the puthon code, there should appear an output directory next to the python code with everything you uploaded to Markers.
-
-**if you need to install the libraries:**
-
-```pip install json os re```
-
-![alt text](assets/output.png)
