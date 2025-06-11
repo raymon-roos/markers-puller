@@ -1,5 +1,14 @@
 # How to use?
 
+**Tools:**
+
+If you have many collections, i would reccomend another repo of mine that allows you to record your mouse and keyboard events and play them back.
+this would allow you to just go once to a collection and record the process and then just switch from collection and run the process again.
+
+https://github.com/bumblebee4105/super-macro
+
+##
+
 **Step 0:**
 
 Download the code from this repo.
@@ -106,11 +115,3 @@ If you now run the puthon code, there should appear an output directory next to 
 ```pip install json os re```
 
 ![alt text](assets/output.png)
-
-
-**Tools:**
-
-If you have many collections, i would reccomend another repo of mine that allows you to record your mouse and keyboard events and play them back.
-this would allow you to just go once to a collection and record the process and then just switch from collection and run the process again.
-
-https://github.com/bumblebee4105/super-macro
