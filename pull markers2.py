@@ -93,9 +93,18 @@ if specific_key in data:
                         continue
 
             # Safe directory and file naming
-            safe_filename = re.sub(r'[^\w\-_\. ]', '_', display_label).strip()[:100]
-            entry_dir = os.path.join(output_dir, safe_filename)
+            safe_dirname = re.sub(r'[^\w\-_\. ]', '_', display_label).strip()[:100]
+            entry_dir = os.path.join(output_dir, safe_dirname)
             os.makedirs(entry_dir, exist_ok=True)
+
+            # Try using the full display label for the filename first
+            md_filename = f"{safe_dirname}.md"
+            md_path = os.path.join(entry_dir, md_filename)
+
+            # Get the absolute path to check its total length
+            abs_md_path = os.path.abspath(md_path)
+
+            
 
             # Download files if applicable
             if type_file == "file":
@@ -134,7 +143,19 @@ if specific_key in data:
                         markdown_lines.append(f"\n- {name} responded:\n```html\n{comment}\n```\n")
 
             # Write Markdown file
-            md_path = os.path.join(entry_dir, f"{safe_filename}.md")
+            # If the full absolute path is too long, shorten the filename portion
+            if len(abs_md_path) > 260:
+                short_filename = re.sub(r'[^\w\-_\. ]', '_', display_label).strip()[:30]
+                md_filename = f"{short_filename}.md"
+                md_path = os.path.join(entry_dir, md_filename)
+                abs_md_path = os.path.abspath(md_path)
+            
+                # Fallback: truncate further if needed
+                if len(abs_md_path) > 260:
+                    md_filename = f"{element_id}.md"
+                    md_path = os.path.join(entry_dir, md_filename)
+                    abs_md_path = os.path.abspath(md_path)
+
             with open(md_path, "w", encoding="utf-8") as f:
                 f.write("\n".join(markdown_lines))
 
