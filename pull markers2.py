@@ -32,8 +32,38 @@ json_file_path = 'markers.json'
 specific_key = 'evaluations'
 other_keys = ["evaluation_invites", "goals", "handins", "question_responses", "questions", "reports", "users"]
 
-with open(json_file_path, 'r', encoding='utf-8') as file:
-    data = json.load(file)
+def answer_check(check):
+    if check != "yes" and check != "no":
+        print("impossible answer")
+        check = str(input("yes or no\n"))
+        answer_check(check)
+    else:
+        json_name(check)
+
+def json_name(check):
+    global data
+    if check == "yes":
+        print("weird, please contact the developer for help")
+        exit()
+    if check == "no":
+        json_file_path = str(input("please type the corect name of the json file including .json\n"))
+        try:
+            with open(json_file_path, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+        except:
+            print(f"couldn't find {json_file_path}")
+            print(f"are you sure {json_file_path} is corect?")
+            check = str(input("yes or no\n"))
+            answer_check(check)
+
+try:
+    with open(json_file_path, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+except:
+    print(f"couldn't find {json_file_path}")
+    print(f"are you sure {json_file_path} is corect?")
+    check = str(input("yes or no\n"))
+    answer_check(check)
 
 # Main processing
 if specific_key in data:
