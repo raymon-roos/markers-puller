@@ -11,7 +11,7 @@ https://github.com/bumblebee4105/super-macro
 
 **if you need to install the libraries:**
 
-```pip install json os re```
+```pip install json os re requests urllib```
 
 ##
 
