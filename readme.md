@@ -2,16 +2,16 @@
 
 **Tools:**
 
-If you have many collections, i would reccomend another repo of mine that allows you to record your mouse and keyboard events and play them back.
-this would allow you to just go once to a collection and record the process and then just switch from collection and run the process again.
+If you have many collections, I would recommend another repo of mine that allows you to record your mouse and keyboard events and play them back.
+This would allow you to just go once to a collection and record the process and then just switch from collection and run the process again.
 
 https://github.com/bumblebee4105/super-macro
 
 ##
 
-**if you need to install the libraries:**
+**You need to install the dependencies:**
 
-```pip install json os re requests urllib```
+```pip install -r requirements.txt```
 
 ##
 
