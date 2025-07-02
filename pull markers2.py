@@ -123,18 +123,16 @@ if specific_key in data:
                         continue
 
             # Safe directory and file naming
-            safe_dirname = re.sub(r'[^\w\-_\. ]', '_', display_label).strip()[:100]
-            entry_dir = os.path.join(output_dir, safe_dirname)
+            entry_dir = os.path.join(output_dir, type_file)
             os.makedirs(entry_dir, exist_ok=True)
 
             # Try using the full display label for the filename first
+            safe_filename = re.sub(r'[^\w\-_\. ]', '_', display_label).strip()[:100]
             md_filename = f"{safe_dirname}.md"
             md_path = os.path.join(entry_dir, md_filename)
 
             # Get the absolute path to check its total length
             abs_md_path = os.path.abspath(md_path)
-
-            
 
             # Download files if applicable
             if type_file == "file":
