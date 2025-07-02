@@ -123,18 +123,16 @@ if specific_key in data:
                         continue
 
             # Safe directory and file naming
-            safe_dirname = re.sub(r'[^\w\-_\. ]', '_', display_label).strip()[:100]
-            entry_dir = os.path.join(output_dir, safe_dirname)
+            entry_dir = os.path.join(output_dir, type_file)
             os.makedirs(entry_dir, exist_ok=True)
 
             # Try using the full display label for the filename first
-            md_filename = f"{safe_dirname}.md"
+            safe_filename = re.sub(r'[^\w\-_\. ]', '_', display_label).strip()[:100]
+            md_filename = f"{safe_filename}.md"
             md_path = os.path.join(entry_dir, md_filename)
 
             # Get the absolute path to check its total length
             abs_md_path = os.path.abspath(md_path)
-
-            
 
             # Download files if applicable
             if type_file == "file":
@@ -154,11 +152,11 @@ if specific_key in data:
             if message:
                 markdown_lines.append(f"\n**Message:** {message}\n")
             if file_urls:
-                markdown_lines.append(f"\n**Download URLs:**")
+                markdown_lines.append("\n**Download URLs:**")
                 for url in file_urls:
                     markdown_lines.append(f"- {url}")
             if typed_texts:
-                markdown_lines.append(f"\n**Typed Texts:**")
+                markdown_lines.append("\n**Typed Texts:**")
                 for txt in typed_texts:
                     markdown_lines.append(f"\n```html\n{txt}\n```\n")
             if users_send_to:
