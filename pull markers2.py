@@ -4,13 +4,13 @@ import re
 import requests
 import urllib.parse
 
-# Utility to sanitize and filter HTML tags
-def filter(text):
-    return text.replace("<p>", "").replace("</p>", "").replace("<br>", "").replace("<ul>", "").replace("</ul>", "")\
-        .replace("<ol>", "").replace("</ol>", "").replace("<li>", "").replace("</li>", "")\
-        .replace("<strong>", "").replace("</strong>", "").replace("<em>", "").replace("</em>", "")\
-        .replace("<u>", "").replace("</u>", "").replace("<s>", "").replace("</s>", "")\
-        .replace("<span>", "").replace("</span>", "")
+# Utility to sanitize HTML tags
+def sanitize(text: str) -> str:
+    elems = ["p", "br", "ul", "ol", "li", "strong", "em", "u", "s", "span", "b", "i"]
+    for elem in elems:
+        text = text.replace(f"<{elem}>","").replace(f"</{elem}>","")
+
+    return text
 
 # Utility to download a file from a URL into the given folder
 def download_file(url, save_dir):
