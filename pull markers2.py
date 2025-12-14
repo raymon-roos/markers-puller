@@ -4,13 +4,13 @@ import re
 import requests
 import urllib.parse
 
-# Utility to sanitize and filter HTML tags
-def filter(text):
-    return text.replace("<p>", "").replace("</p>", "").replace("<br>", "").replace("<ul>", "").replace("</ul>", "")\
-        .replace("<ol>", "").replace("</ol>", "").replace("<li>", "").replace("</li>", "")\
-        .replace("<strong>", "").replace("</strong>", "").replace("<em>", "").replace("</em>", "")\
-        .replace("<u>", "").replace("</u>", "").replace("<s>", "").replace("</s>", "")\
-        .replace("<span>", "").replace("</span>", "")
+# Utility to sanitize HTML tags
+def sanitize(text: str) -> str:
+    elems = ["p", "br", "ul", "ol", "li", "strong", "em", "u", "s", "span", "b", "i"]
+    for elem in elems:
+        text = text.replace(f"<{elem}>","").replace(f"</{elem}>","")
+
+    return text
 
 # Utility to download a file from a URL into the given folder
 def download_file(url, save_dir):
@@ -105,11 +105,11 @@ if specific_key in data:
                             users_send_to_id.add(other_element["user_id"])
                         elif key == "question_responses":
                             if other_element.get("evaluation_id") == element_id:
-                                typed_texts.add(filter(other_element["comment"]))
+                                typed_texts.add(sanitize(other_element["comment"]))
                             if other_element.get("feedback_provider_id") in users_send_to_id and \
                                other_element.get("evaluation_id") == element_id:
                                 uid = other_element["feedback_provider_id"]
-                                responses.setdefault(uid, []).append(filter(other_element["comment"]))
+                                responses.setdefault(uid, []).append(sanitize(other_element["comment"]))
                         elif key == "handins" and other_element.get("evaluation_id") == element_id:
                             for k in ["file_download_url", "external_url"]:
                                 url = other_element.get(k)
