@@ -1,119 +1,36 @@
-# How to use?
+### What is this
 
-**Tools:**
+A fork of https://github.com/bumblebee4105/markers-puller, a python script to export The
+Markers content as markdown, neatly organized in subdirectories. _The Markers_ was
+a school software used by Open-ICT at Hogeschool Utrecht for several years. This
+collaboration has ended after my first year in the study. The first-party PDF export was
+deplorable, hence a student took the initiative to build a better one by scraping its API.
+This was the original `markers-pullers`. I tried it, but noticed a few things I would've
+done differently, hence I forked it and made some PRs to upstream.
 
-If you have many collections, I would recommend another repo of mine that allows you to record your mouse and keyboard events and play them back.
-This would allow you to just go once to a collection and record the process and then just switch from collection and run the process again.
+Since HU students no longer have access to their _The Markers_ portoflios, this project
+exists solely for posterity, and was an opportunity for me to practice managing
+a simple Python project with Nix at the time.
 
-https://github.com/bumblebee4105/super-macro
+The major difference with upstream, is that this fork will output all the files in
+sub-directories by categories. So all peer feedback goes in `output/feedback`, all teacher
+evaluations go to `output/evaluation`, check-ins to `output/checkin` etc.
 
-##
+I've also made small refactors to the code, and added a `flake.nix` with Nix managed
+dependencies, and got rid of the dozens of screenshots in the README, as I expect a savvy
+student to be familiar with the process.
 
-**You need to install the dependencies:**
+### How to use
 
-```pip install -r requirements.txt```
+If you use Nix/NixOS for development, simply launch the development shell: `nix develop`
+(or `direnv allow`, if you happen to use nix-direnv as well.)
 
-##
+Without Nix, install python & pip, create and start a virtual environment, and do
+`pip install -r requirements.txt`
 
-**Step 0:**
-
-Download the code from this repo.
-
-##
-
-**Step 1:**
-
-Open your Markers and log in.
-Go to one of your collections at a time.
-
-##
-
-**Step 2:**
-
-Go to inspect element.
-
-![Screenshot](assets/to_inspect_element.png)
-
-##
-
-**Step 3:**
-
-Go to the network tab in the element inspector.
-This is sometimes in the lint:
-
-![Screenshot](assets/network_in_lint.png)
-
-But can also be in a hamburger menu like this:
-
-![Screenshot](assets/network_in_hamburger.png)
-
-##
-
-**Step 4:**
-
-Refresh the Markers page with the network tab open.
-If it went well, you would see something like this in the network tab:
-
-![Screenshot](assets/network_after_refresh.png)
-
-##
-
-**Step 5:**
-
-We are searching for a specific part in here and we can easily find it by sorting things on time by clicking 2 times on the time part in the network tab so there is a downwards arrow next to "time":
-
-before:
-
-![Screenshot](assets/before_click.png)
-
-after:
-
-![Screenshot](assets/after_click.png)
-
-##
-
-**Step 6:**
-
-Click on the part that i probably at the top because it took long to load and if not, its name starts with "evaluation" and has an orange ";" in front of it:
-
-before:
-
-![alt text](assets/evaluation_api.png)
-
-after:
-
-![alt text](assets/api_after_click.png)
-
-##
-
-**Step 7:**
-
-Copy this part:
-
-![alt text](assets/copy_api_url.png)
-
-and place it in a new browser tab as the url:
-
-![alt text](assets/place_url_in_new_tab.png)
-
-and hit enter.
-
-If done correctly, the page will load for probably a few seconds and then show something like this after we click "pretty-print":
-
-![alt text](assets/api_result.png)
-
-##
-
-**Step 8:**
-
-Copy all the text in that browser window and save it in a JSON file next to the python code from this repo as "markers.json":
-
-![alt text](assets/text_saved_in_json.png)
-
-##
-
-**Step 9:**
-
-If you now run the puthon code, there should appear an output directory next to the python code with everything you uploaded to Markers.
-
-![alt text](assets/output.png)
+You should have a JSON file for each of your _The Markers_ collections. Since you can no
+longer access _The Markers_, nothing can be done if you do not have them. They could be
+retrieved by logging in to the website, looking at the web console, finding the API call
+that would load the collection data (all of it, at once!!), and download & save it
+a `markers.json`. Calling `python <path/to/this/repo/src/extract_markers.py>` in the same
+folder as where `markers.json` is located, will then run the extraction process.
