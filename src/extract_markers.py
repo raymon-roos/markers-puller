@@ -90,10 +90,11 @@ if specific_key in data:
             type_file = {
                 10074: "evaluation",
                 10076: "reflection",
-                10075: "feedback",
+                10075: "feedback", # peer feedback
+                10141: "feedback", # self-registered feedback
                 10077: "checkin",
                 10120: "file"
-            }.get(feedback_moment_id, "something else")
+            }.get(feedback_moment_id, "other")
 
             # Collect related data
             for key in other_keys:
